@@ -195,12 +195,83 @@
             "color": "#fbc02d"
           }
         ],
-        eventClick: function(info) {
-          var newTitle = prompt('Edit session title:', info.event.title);
-          if (newTitle !== null) {
-            info.event.setProp('title', newTitle);
-          }
-        },
+        
+    eventClick: function(info) {
+    const event = info.event;
+
+    const popup = document.createElement('div');
+    popup.style.position = 'fixed';
+    popup.style.top = '50%';
+    popup.style.left = '50%';
+    popup.style.transform = 'translate(-50%, -50%)';
+    popup.style.backgroundColor = '#1a1a1a';
+    popup.style.color = 'white';
+    popup.style.padding = '20px';
+    popup.style.borderRadius = '10px';
+    popup.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.5)';
+    popup.style.zIndex = '9999';
+    popup.style.width = '300px';
+
+    popup.innerHTML = `
+        <label>Title:<br><input type="text" id="popupTitle" value="${event.title}" style="width:100%"></label><br><br>
+        <label>Start:<br><input type="datetime-local" id="popupStart" value="${event.start.toISOString().slice(0,16)}" style="width:100%"></label><br><br>
+        <label>End:<br><input type="datetime-local" id="popupEnd" value="${event.end.toISOString().slice(0,16)}" style="width:100%"></label><br><br>
+        <label>Task Type:<br>
+            <select id="popupType" style="width:100%">
+                <option ${event.classNames.includes('Study') ? 'selected' : ''}>Study</option>
+                <option ${event.classNames.includes('Exercise') ? 'selected' : ''}>Exercise</option>
+                <option ${event.classNames.includes('Rest') ? 'selected' : ''}>Rest</option>
+                <option ${event.classNames.includes('Gaming') ? 'selected' : ''}>Gaming</option>
+                <option ${event.classNames.includes('Work') ? 'selected' : ''}>Work</option>
+                <option ${event.classNames.includes('Other') ? 'selected' : ''}>Other</option>
+            </select>
+        </label><br><br>
+        <button id="popupSave">Save</button>
+        <button id="popupDelete">Delete</button>
+        <button id="popupDuplicate">Duplicate</button>
+        <button id="popupCancel">Cancel</button>
+    `;
+
+    document.body.appendChild(popup);
+
+    document.getElementById('popupSave').onclick = function() {
+        event.setProp('title', document.getElementById('popupTitle').value);
+        event.setStart(document.getElementById('popupStart').value);
+        event.setEnd(document.getElementById('popupEnd').value);
+
+        const type = document.getElementById('popupType').value;
+        event.setProp('classNames', [type]);
+        popup.remove();
+    };
+
+    document.getElementById('popupDelete').onclick = function() {
+        event.remove();
+        popup.remove();
+    };
+
+    document.getElementById('popupDuplicate').onclick = function() {
+        const calendarApi = info.view.calendar;
+
+        const title = document.getElementById('popupTitle').value;
+        const start = document.getElementById('popupStart').value;
+        const end = document.getElementById('popupEnd').value;
+        const type = document.getElementById('popupType').value;
+
+        calendarApi.addEvent({
+            title,
+            start,
+            end,
+            classNames: [type],
+        });
+
+        popup.remove();
+    };
+
+    document.getElementById('popupCancel').onclick = function() {
+        popup.remove();
+    };
+}
+
         eventDrop: function(info) {
           alert('Moved to: ' + info.event.start.toLocaleString());
         },
