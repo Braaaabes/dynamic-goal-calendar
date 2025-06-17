@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+  <style>
+    body {
+      margin: 40px 10px;
+      padding: 0;
+      font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    }
+    #calendar {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div id='calendar'></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridDay',
+        slotMinTime: '07:00:00',
+        slotMaxTime: '22:00:00',
+        allDaySlot: false,
+        events: [
+  {
+    "title": "Study: Deep Work",
+    "start": "2025-06-11T09:00:00",
+    "end": "2025-06-11T10:30:00",
+    "color": "#3a87ad"
+  },
+  {
+    "title": "Study: Deep Work (1)",
+    "start": "2025-06-11T10:30:00",
+    "end": "2025-06-11T12:00:00",
+    "color": "#3a87ad"
+  },
+  {
+    "title": "Study: Deep Work (2)",
+    "start": "2025-06-11T12:00:00",
+    "end": "2025-06-11T13:30:00",
+    "color": "#3a87ad"
+  },
+  {
+    "title": "Study: Deep Work (3)",
+    "start": "2025-06-11T13:30:00",
+    "end": "2025-06-11T15:00:00",
+    "color": "#3a87ad"
+  },
+  {
+    "title": "Study: Deep Work (4)",
+    "start": "2025-06-11T15:00:00",
+    "end": "2025-06-11T16:30:00",
+    "color": "#3a87ad"
+  },
+  {
+    "title": "Study: Deep Work (5)",
+    "start": "2025-06-11T16:30:00",
+    "end": "2025-06-11T18:00:00",
+    "color": "#3a87ad"
+  },
+  {
+    "title": "Study: Deep Work (6)",
+    "start": "2025-06-11T18:00:00",
+    "end": "2025-06-11T19:30:00",
+    "color": "#3a87ad"
+  },
+  {
+    "title": "Study: Deep Work (7)",
+    "start": "2025-06-11T19:30:00",
+    "end": "2025-06-11T21:00:00",
+    "color": "#3a87ad"
+  },
+  {
+    "title": "Study: Deep Work (8)",
+    "start": "2025-06-11T21:00:00",
+    "end": "2025-06-11T22:30:00",
+    "color": "#3a87ad"
+  },
+  {
+    "title": "Study: Deep Work (9)",
+    "start": "2025-06-11T22:30:00",
+    "end": "2025-06-12T00:00:00",
+    "color": "#3a87ad"
+  },
+  {
+    "title": "Exercise: Yoga",
+    "start": "2025-06-12T00:00:00",
+    "end": "2025-06-12T01:00:00",
+    "color": "#4caf50"
+  },
+  {
+    "title": "Exercise: Long Walk",
+    "start": "2025-06-12T01:30:00",
+    "end": "2025-06-12T02:30:00",
+    "color": "#4caf50"
+  },
+  {
+    "title": "Exercise: Stretching",
+    "start": "2025-06-12T03:00:00",
+    "end": "2025-06-12T04:00:00",
+    "color": "#4caf50"
+  },
+  {
+    "title": "Exercise: Core & Breath",
+    "start": "2025-06-12T04:30:00",
+    "end": "2025-06-12T05:30:00",
+    "color": "#4caf50"
+  },
+  {
+    "title": "Exercise: Walk & Podcast",
+    "start": "2025-06-12T06:00:00",
+    "end": "2025-06-12T07:00:00",
+    "color": "#4caf50"
+  },
+  {
+    "title": "Chill: Games",
+    "start": "2025-06-12T07:30:00",
+    "end": "2025-06-12T08:30:00",
+    "color": "#9c27b0"
+  },
+  {
+    "title": "Chill: TV with Partner",
+    "start": "2025-06-12T09:00:00",
+    "end": "2025-06-12T10:00:00",
+    "color": "#9c27b0"
+  },
+  {
+    "title": "Chill: Solo Wind-down",
+    "start": "2025-06-12T10:30:00",
+    "end": "2025-06-12T11:30:00",
+    "color": "#9c27b0"
+  },
+  {
+    "title": "Chill: Open Play",
+    "start": "2025-06-12T12:00:00",
+    "end": "2025-06-12T13:00:00",
+    "color": "#9c27b0"
+  },
+  {
+    "title": "Lunch",
+    "start": "2025-06-12T13:30:00",
+    "end": "2025-06-12T14:15:00",
+    "color": "#fbc02d"
+  },
+  {
+    "title": "Lunch (1)",
+    "start": "2025-06-12T15:00:00",
+    "end": "2025-06-12T15:45:00",
+    "color": "#fbc02d"
+  },
+  {
+    "title": "Lunch (2)",
+    "start": "2025-06-12T16:30:00",
+    "end": "2025-06-12T17:15:00",
+    "color": "#fbc02d"
+  },
+  {
+    "title": "Lunch (3)",
+    "start": "2025-06-12T18:00:00",
+    "end": "2025-06-12T18:45:00",
+    "color": "#fbc02d"
+  },
+  {
+    "title": "Lunch (4)",
+    "start": "2025-06-12T19:30:00",
+    "end": "2025-06-12T20:15:00",
+    "color": "#fbc02d"
+  },
+  {
+    "title": "Lunch (5)",
+    "start": "2025-06-12T21:00:00",
+    "end": "2025-06-12T21:45:00",
+    "color": "#fbc02d"
+  },
+  {
+    "title": "Lunch (6)",
+    "start": "2025-06-12T22:30:00",
+    "end": "2025-06-12T23:15:00",
+    "color": "#fbc02d"
+  }
+]
+      });
+      calendar.render();
+    });
+  </script>
+</body>
+</html>
