@@ -28,6 +28,9 @@
         slotMinTime: '00:00:00',
         slotMaxTime: '24:00:00',
         allDaySlot: false,
+        nowIndicator: true,
+        editable: true,
+        selectable: true,
         height: "auto",
         headerToolbar: {
           left: 'prev,next today',
@@ -191,7 +194,19 @@
             "end": "2025-06-18T17:30:00",
             "color": "#fbc02d"
           }
-        ]
+        ],
+        eventClick: function(info) {
+          var newTitle = prompt('Edit session title:', info.event.title);
+          if (newTitle !== null) {
+            info.event.setProp('title', newTitle);
+          }
+        },
+        eventDrop: function(info) {
+          alert('Moved to: ' + info.event.start.toLocaleString());
+        },
+        eventResize: function(info) {
+          alert('Resized to end at: ' + info.event.end.toLocaleString());
+        }
       });
       calendar.render();
     });
