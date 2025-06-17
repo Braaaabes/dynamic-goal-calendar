@@ -13,8 +13,11 @@
       color: #eee;
     }
     #calendar {
-      max-width: 1000px;
+      max-width: 1400px;
       margin: 0 auto;
+    }
+    .fc-toolbar-title {
+      font-size: 1.5em;
     }
   </style>
 </head>
@@ -45,232 +48,86 @@
             "color": "#3a87ad"
           },
           {
-            "title": "Study: Deep Work (1)",
-            "start": "2025-06-17T07:45:00",
-            "end": "2025-06-17T09:15:00",
-            "color": "#3a87ad"
-          },
-          {
-            "title": "Study: Deep Work (2)",
-            "start": "2025-06-17T09:30:00",
-            "end": "2025-06-17T11:00:00",
-            "color": "#3a87ad"
-          },
-          {
-            "title": "Study: Deep Work (3)",
-            "start": "2025-06-17T11:15:00",
-            "end": "2025-06-17T12:45:00",
-            "color": "#3a87ad"
-          },
-          {
-            "title": "Study: Deep Work (4)",
+            "title": "Lunch",
             "start": "2025-06-17T13:00:00",
-            "end": "2025-06-17T14:30:00",
-            "color": "#3a87ad"
-          },
-          {
-            "title": "Study: Deep Work (5)",
-            "start": "2025-06-17T14:45:00",
-            "end": "2025-06-17T16:15:00",
-            "color": "#3a87ad"
-          },
-          {
-            "title": "Study: Deep Work (6)",
-            "start": "2025-06-17T16:30:00",
-            "end": "2025-06-17T18:00:00",
-            "color": "#3a87ad"
-          },
-          {
-            "title": "Study: Deep Work (7)",
-            "start": "2025-06-17T18:15:00",
-            "end": "2025-06-17T19:45:00",
-            "color": "#3a87ad"
-          },
-          {
-            "title": "Study: Deep Work (8)",
-            "start": "2025-06-17T20:00:00",
-            "end": "2025-06-17T21:30:00",
-            "color": "#3a87ad"
-          },
-          {
-            "title": "Study: Deep Work (9)",
-            "start": "2025-06-17T21:45:00",
-            "end": "2025-06-17T23:15:00",
-            "color": "#3a87ad"
+            "end": "2025-06-17T13:45:00",
+            "color": "#fbc02d"
           },
           {
             "title": "Exercise: Yoga",
             "start": "2025-06-17T23:30:00",
             "end": "2025-06-18T00:30:00",
             "color": "#4caf50"
-          },
-          {
-            "title": "Exercise: Long Walk",
-            "start": "2025-06-18T00:45:00",
-            "end": "2025-06-18T01:45:00",
-            "color": "#4caf50"
-          },
-          {
-            "title": "Exercise: Stretching",
-            "start": "2025-06-18T02:00:00",
-            "end": "2025-06-18T03:00:00",
-            "color": "#4caf50"
-          },
-          {
-            "title": "Exercise: Core & Breath",
-            "start": "2025-06-18T03:15:00",
-            "end": "2025-06-18T04:15:00",
-            "color": "#4caf50"
-          },
-          {
-            "title": "Exercise: Walk & Podcast",
-            "start": "2025-06-18T04:30:00",
-            "end": "2025-06-18T05:30:00",
-            "color": "#4caf50"
-          },
-          {
-            "title": "Chill: Games",
-            "start": "2025-06-18T05:45:00",
-            "end": "2025-06-18T06:45:00",
-            "color": "#9c27b0"
-          },
-          {
-            "title": "Chill: TV w/ Partner",
-            "start": "2025-06-18T07:00:00",
-            "end": "2025-06-18T08:00:00",
-            "color": "#9c27b0"
-          },
-          {
-            "title": "Chill: Solo Wind-down",
-            "start": "2025-06-18T08:15:00",
-            "end": "2025-06-18T09:15:00",
-            "color": "#9c27b0"
-          },
-          {
-            "title": "Chill: Open Play",
-            "start": "2025-06-18T09:30:00",
-            "end": "2025-06-18T10:30:00",
-            "color": "#9c27b0"
-          },
-          {
-            "title": "Lunch",
-            "start": "2025-06-18T10:45:00",
-            "end": "2025-06-18T11:30:00",
-            "color": "#fbc02d"
-          },
-          {
-            "title": "Lunch",
-            "start": "2025-06-18T11:45:00",
-            "end": "2025-06-18T12:30:00",
-            "color": "#fbc02d"
-          },
-          {
-            "title": "Lunch",
-            "start": "2025-06-18T12:45:00",
-            "end": "2025-06-18T13:30:00",
-            "color": "#fbc02d"
-          },
-          {
-            "title": "Lunch",
-            "start": "2025-06-18T13:45:00",
-            "end": "2025-06-18T14:30:00",
-            "color": "#fbc02d"
-          },
-          {
-            "title": "Lunch",
-            "start": "2025-06-18T14:45:00",
-            "end": "2025-06-18T15:30:00",
-            "color": "#fbc02d"
-          },
-          {
-            "title": "Lunch",
-            "start": "2025-06-18T15:45:00",
-            "end": "2025-06-18T16:30:00",
-            "color": "#fbc02d"
-          },
-          {
-            "title": "Lunch",
-            "start": "2025-06-18T16:45:00",
-            "end": "2025-06-18T17:30:00",
-            "color": "#fbc02d"
           }
         ],
-        
-    eventClick: function(info) {
-    const event = info.event;
+        eventClick: function(info) {
+          const event = info.event;
+          const popup = document.createElement('div');
+          popup.style.position = 'fixed';
+          popup.style.top = '50%';
+          popup.style.left = '50%';
+          popup.style.transform = 'translate(-50%, -50%)';
+          popup.style.backgroundColor = '#1a1a1a';
+          popup.style.color = 'white';
+          popup.style.padding = '20px';
+          popup.style.borderRadius = '10px';
+          popup.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.5)';
+          popup.style.zIndex = '9999';
+          popup.style.width = '300px';
 
-    const popup = document.createElement('div');
-    popup.style.position = 'fixed';
-    popup.style.top = '50%';
-    popup.style.left = '50%';
-    popup.style.transform = 'translate(-50%, -50%)';
-    popup.style.backgroundColor = '#1a1a1a';
-    popup.style.color = 'white';
-    popup.style.padding = '20px';
-    popup.style.borderRadius = '10px';
-    popup.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.5)';
-    popup.style.zIndex = '9999';
-    popup.style.width = '300px';
+          popup.innerHTML = `
+              <label>Title:<br><input type="text" id="popupTitle" value="${event.title}" style="width:100%"></label><br><br>
+              <label>Start:<br><input type="datetime-local" id="popupStart" value="${event.start.toISOString().slice(0,16)}" style="width:100%"></label><br><br>
+              <label>End:<br><input type="datetime-local" id="popupEnd" value="${event.end.toISOString().slice(0,16)}" style="width:100%"></label><br><br>
+              <label>Task Type:<br>
+                  <select id="popupType" style="width:100%">
+                      <option>Study</option>
+                      <option>Exercise</option>
+                      <option>Rest</option>
+                      <option>Gaming</option>
+                      <option>Work</option>
+                      <option>Other</option>
+                  </select>
+              </label><br><br>
+              <button id="popupSave">Save</button>
+              <button id="popupDelete">Delete</button>
+              <button id="popupDuplicate">Duplicate</button>
+              <button id="popupCancel">Cancel</button>
+          `;
 
-    popup.innerHTML = `
-        <label>Title:<br><input type="text" id="popupTitle" value="${event.title}" style="width:100%"></label><br><br>
-        <label>Start:<br><input type="datetime-local" id="popupStart" value="${event.start.toISOString().slice(0,16)}" style="width:100%"></label><br><br>
-        <label>End:<br><input type="datetime-local" id="popupEnd" value="${event.end.toISOString().slice(0,16)}" style="width:100%"></label><br><br>
-        <label>Task Type:<br>
-            <select id="popupType" style="width:100%">
-                <option ${event.classNames.includes('Study') ? 'selected' : ''}>Study</option>
-                <option ${event.classNames.includes('Exercise') ? 'selected' : ''}>Exercise</option>
-                <option ${event.classNames.includes('Rest') ? 'selected' : ''}>Rest</option>
-                <option ${event.classNames.includes('Gaming') ? 'selected' : ''}>Gaming</option>
-                <option ${event.classNames.includes('Work') ? 'selected' : ''}>Work</option>
-                <option ${event.classNames.includes('Other') ? 'selected' : ''}>Other</option>
-            </select>
-        </label><br><br>
-        <button id="popupSave">Save</button>
-        <button id="popupDelete">Delete</button>
-        <button id="popupDuplicate">Duplicate</button>
-        <button id="popupCancel">Cancel</button>
-    `;
+          document.body.appendChild(popup);
 
-    document.body.appendChild(popup);
+          document.getElementById('popupSave').onclick = function() {
+              event.setProp('title', document.getElementById('popupTitle').value);
+              event.setStart(document.getElementById('popupStart').value);
+              event.setEnd(document.getElementById('popupEnd').value);
+              popup.remove();
+          };
 
-    document.getElementById('popupSave').onclick = function() {
-        event.setProp('title', document.getElementById('popupTitle').value);
-        event.setStart(document.getElementById('popupStart').value);
-        event.setEnd(document.getElementById('popupEnd').value);
+          document.getElementById('popupDelete').onclick = function() {
+              event.remove();
+              popup.remove();
+          };
 
-        const type = document.getElementById('popupType').value;
-        event.setProp('classNames', [type]);
-        popup.remove();
-    };
+          document.getElementById('popupDuplicate').onclick = function() {
+              const calendarApi = info.view.calendar;
+              const title = document.getElementById('popupTitle').value;
+              const start = document.getElementById('popupStart').value;
+              const end = document.getElementById('popupEnd').value;
+              const type = document.getElementById('popupType').value;
+              calendarApi.addEvent({
+                  title,
+                  start,
+                  end,
+                  classNames: [type]
+              });
+              popup.remove();
+          };
 
-    document.getElementById('popupDelete').onclick = function() {
-        event.remove();
-        popup.remove();
-    };
-
-    document.getElementById('popupDuplicate').onclick = function() {
-        const calendarApi = info.view.calendar;
-
-        const title = document.getElementById('popupTitle').value;
-        const start = document.getElementById('popupStart').value;
-        const end = document.getElementById('popupEnd').value;
-        const type = document.getElementById('popupType').value;
-
-        calendarApi.addEvent({
-            title,
-            start,
-            end,
-            classNames: [type],
-        });
-
-        popup.remove();
-    };
-
-    document.getElementById('popupCancel').onclick = function() {
-        popup.remove();
-    };
-}}
+          document.getElementById('popupCancel').onclick = function() {
+              popup.remove();
+          };
+        },
 
         eventDrop: function(info) {
           alert('Moved to: ' + info.event.start.toLocaleString());
@@ -279,8 +136,10 @@
           alert('Resized to end at: ' + info.event.end.toLocaleString());
         }
       });
+
       calendar.render();
     });
   </script>
 </body>
 </html>
+
