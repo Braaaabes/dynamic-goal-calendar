@@ -141,15 +141,69 @@
           }
         ],
         eventClick: function (info) {
-          const newTitle = prompt('Edit event title:', info.event.title);
-          if (newTitle !== null) {
-            info.event.setProp('title', newTitle);
-          }
-        }
+  openModal(info.event);
+}
+
       });
 
       calendar.render();
 
+// === Modal Handling ===
+const modal = document.getElementById('eventModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalDate = document.getElementById('modalDate');
+const modalStart = document.getElementById('modalStart');
+const modalDuration = document.getElementById('modalDuration');
+const modalPreset = document.getElementById('modalPreset');
+const modalSave = document.getElementById('modalSave');
+const modalCancel = document.getElementById('modalCancel');
+
+let selectedEvent = null;
+
+function openModal(event) {
+  selectedEvent = event;
+
+  const start = event.start;
+  const end = event.end;
+  const durationMins = (end - start) / (1000 * 60);
+
+  modalTitle.value = event.title;
+  modalDate.value = start.toISOString().split('T')[0];
+  modalStart.value = start.toTimeString().slice(0, 5);
+  modalDuration.value = durationMins;
+  modalPreset.value = event.extendedProps.type;
+
+  modal.classList.remove('hidden');
+}
+
+function closeModal() {
+  modal.classList.add('hidden');
+  selectedEvent = null;
+}
+
+modalCancel.addEventListener('click', closeModal);
+
+modalSave.addEventListener('click', () => {
+  if (!selectedEvent) return;
+
+  const newTitle = modalTitle.value;
+  const newDate = modalDate.value;
+  const newStartTime = modalStart.value;
+  const newDuration = parseInt(modalDuration.value, 10);
+  const newPreset = modalPreset.value;
+
+  const newStart = new Date(`${newDate}T${newStartTime}`);
+  const newEnd = new Date(newStart.getTime() + newDuration * 60000);
+
+  selectedEvent.setProp('title', newTitle);
+  selectedEvent.setStart(newStart);
+  selectedEvent.setEnd(newEnd);
+  selectedEvent.setExtendedProp('type', newPreset);
+
+  closeModal();
+});
+
+    
       document.querySelectorAll('[data-type]').forEach(cb => {
         cb.addEventListener('change', function () {
           const type = this.getAttribute('data-type');
@@ -166,5 +220,45 @@
       });
     });
   </script>
+
+  <!-- Event Edit Modal -->
+<div id="eventModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Edit Event</h2>
+
+    <label>Title:
+      <input type="text" id="modalTitle" />
+    </label>
+
+    <label>Date:
+      <input type="date" id="modalDate" />
+    </label>
+
+    <label>Start Time:
+      <input type="time" id="modalStart" />
+    </label>
+
+    <label>Duration (mins):
+      <input type="number" id="modalDuration" min="15" step="15" />
+    </label>
+
+    <label>Preset Type:
+      <select id="modalPreset">
+        <option value="Study">Study</option>
+        <option value="Rest">Rest</option>
+        <option value="Lunch">Lunch</option>
+        <option value="Chill Time">Chill Time</option>
+      </select>
+    </label>
+
+    <div class="modal-buttons">
+      <button id="modalSave">Save</button>
+      <button id="modalDelete">Delete</button>
+      <button id="modalCancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+  
 </body>
 </html>
