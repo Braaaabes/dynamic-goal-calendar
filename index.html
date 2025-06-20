@@ -202,7 +202,7 @@
       </div>
       <button class="toggle-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
     </div>
-    <div class="version-label">Version V1.3.9</div>
+    <div class="version-label">Version V1.3.10</div>
   </div>
   <div class="main-content">
     <div id='calendar'></div>
@@ -256,15 +256,14 @@ const calendar = new FullCalendar.Calendar(calendarEl, {
 
     openModal(newEvent);
   } // ← closing brace for dateClick
-});   // ← closing brace for FullCalendar config
+}); // ← closing brace for FullCalendar config
 
-}); // End of calendar config
+calendar.render(); // ✅ Render the calendar
 
-    }); // closing brace for DOMContentLoaded
-    
-console.log("🧪 JS is loading correctly");
+console.log("🧪 JS is loading correctly"); // ✅ Optional debug log
 
-    calendar.render();
+}); // ← closing brace for DOMContentLoaded
+
 
 // === Modal Handling ===
 const modal = document.getElementById('eventModal');
