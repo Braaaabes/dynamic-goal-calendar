@@ -202,7 +202,7 @@
       </div>
       <button class="toggle-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
     </div>
-    <div class="version-label">Version V1.3.6</div>
+    <div class="version-label">Version V1.3.7</div>
   </div>
   <div class="main-content">
     <div id='calendar'></div>
@@ -214,45 +214,50 @@
 
     document.addEventListener('DOMContentLoaded', function () {
       const calendarEl = document.getElementById('calendar');
-      const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'timeGridWeek',
-        nowIndicator: true,
-        editable: true,
-        selectable: true,
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        },
-        events: [
-          {
-            id: '1',
-            title: 'Study - Deep Work',
-            start: new Date().toISOString().split('T')[0] + 'T09:00:00',
-            end: new Date().toISOString().split('T')[0] + 'T10:30:00',
-            extendedProps: { type: 'Study' }
-          },
-          {
-            id: '2',
-            title: 'Lunch',
-            start: new Date().toISOString().split('T')[0] + 'T12:30:00',
-            end: new Date().toISOString().split('T')[0] + 'T13:15:00',
-            extendedProps: { type: 'Lunch' }
-          }
-        ],
-        eventClick: function (info) {
-  openModal(info.event);
-},
-dateClick: function (info) {
-  const start = new Date(info.date);
-  const end = new Date(start.getTime() + 60 * 60000); // default: +60 mins
+const calendar = new FullCalendar.Calendar(calendarEl, {
+  initialView: 'timeGridWeek',
+  nowIndicator: true,
+  editable: true,
+  selectable: true,
+  headerToolbar: {
+    left: 'prev,next today',
+    center: 'title',
+    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+  },
+  events: [
+    {
+      id: '1',
+      title: 'Study - Deep Work',
+      start: new Date().toISOString().split('T')[0] + 'T09:00:00',
+      end: new Date().toISOString().split('T')[0] + 'T10:30:00',
+      extendedProps: { type: 'Study' }
+    },
+    {
+      id: '2',
+      title: 'Lunch',
+      start: new Date().toISOString().split('T')[0] + 'T12:30:00',
+      end: new Date().toISOString().split('T')[0] + 'T13:15:00',
+      extendedProps: { type: 'Lunch' }
+    }
+  ],
+  eventClick: function (info) {
+    openModal(info.event);
+  },
+  dateClick: function (info) {
+    const start = new Date(info.date);
+    const end = new Date(start.getTime() + 60 * 60000); // default: +60 mins
 
-  const newEvent = calendar.addEvent({
-    title: 'New Session',
-    start: start,
-    end: end,
-    extendedProps: { type: 'Study' }
-  });
+    const newEvent = calendar.addEvent({
+      title: 'New Session',
+      start: start,
+      end: end,
+      extendedProps: { type: 'Study' }
+    });
+
+    openModal(newEvent);
+  } // ← closing brace for dateClick
+});   // ← closing brace for FullCalendar config
+
 
   openModal(newEvent);
 }
