@@ -1,179 +1,170 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dynamic Goal Calendar V1.1</title>
+  <title>Dynamic Goal Calendar - V1.2</title>
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
   <style>
     :root {
-      --bg: #f9f9fa;
-      --text: #333;
-      --pastel-study: #d1e8ff;
-      --pastel-rest: #ffe0e6;
-      --pastel-chill: #e8e5ff;
-      --highlight: #ffb347;
-      --border-radius: 10px;
-      --sidebar-bg: #ffffff;
-      --sidebar-width: 200px;
+      --pastel-blue: #a3d2ca;
+      --pastel-green: #b5ead7;
+      --pastel-yellow: #fff5ba;
+      --pastel-pink: #ffb7b2;
+      --pastel-purple: #cdb4db;
+      --neutral-bg: #f4f4f4;
+      --dark-bg: #2c2c2c;
+      --font-color: #333;
+      --border-radius: 8px;
     }
 
     body {
       margin: 0;
       font-family: sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      background-color: var(--neutral-bg);
+      color: var(--font-color);
       display: flex;
     }
 
     .sidebar {
-      width: var(--sidebar-width);
-      background: var(--sidebar-bg);
-      padding: 1rem;
-      border-right: 1px solid #ddd;
+      width: 240px;
+      background-color: var(--pastel-blue);
+      padding: 20px;
+      height: 100vh;
+      box-sizing: border-box;
+      border-top-right-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .sidebar h2 {
-      font-size: 1rem;
-      margin: 0 0 1rem;
+      margin-top: 0;
     }
 
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
+    .sidebar .toggle-section {
+      margin-bottom: 20px;
     }
 
-    .sidebar li {
-      margin-bottom: 0.5rem;
-      padding: 0.5rem;
+    .sidebar label {
+      display: block;
+      margin: 5px 0;
+    }
+
+    .toggle-button {
+      margin-top: 10px;
+      padding: 6px 10px;
+      background-color: var(--pastel-green);
+      border: none;
       border-radius: var(--border-radius);
       cursor: pointer;
-      transition: background 0.2s;
     }
 
-    .sidebar li:hover {
-      background: #f0f0f0;
+    .main-content {
+      flex-grow: 1;
+      padding: 20px;
     }
 
-    .calendar {
-      flex: 1;
-      padding: 2rem;
+    #calendar {
+      max-width: 100%;
+      margin: 0 auto;
     }
 
-    .calendar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .dark-mode {
+      background-color: var(--dark-bg);
+      color: white;
     }
 
-    .filters {
-      display: flex;
-      gap: 1rem;
-      margin: 1rem 0;
+    .dark-mode .fc {
+      background-color: #1f1f1f;
     }
 
-    .filters label {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .timeline {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .hour-block {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 0.5rem;
-      background: white;
-      border-radius: var(--border-radius);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
-
-    .task {
-      padding: 0.25rem 0.5rem;
-      border-radius: var(--border-radius);
-      font-size: 0.9rem;
-    }
-
-    .task.study { background: var(--pastel-study); }
-    .task.rest { background: var(--pastel-rest); }
-    .task.chill { background: var(--pastel-chill); }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: var(--sidebar-width);
-      padding: 0.5rem 1rem;
-      font-size: 0.8rem;
-      color: #888;
+    .version-label {
+      font-size: 0.85rem;
+      margin-top: 20px;
+      text-align: center;
+      opacity: 0.7;
     }
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <h2>Navigation</h2>
-    <ul>
-      <li>Overview</li>
-      <li>This Week</li>
-      <li>Goals</li>
-      <li>Habits</li>
-      <li>Settings</li>
-    </ul>
+    <div>
+      <h2>Filters</h2>
+      <div class="toggle-section">
+        <label><input type="checkbox" checked data-type="Study" /> Study</label>
+        <label><input type="checkbox" checked data-type="Rest" /> Rest</label>
+        <label><input type="checkbox" checked data-type="Lunch" /> Lunch</label>
+        <label><input type="checkbox" checked data-type="Chill Time" /> Chill Time</label>
+      </div>
+      <button class="toggle-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    </div>
+    <div class="version-label">Version V1.2</div>
   </div>
-  <div class="calendar">
-    <div class="calendar-header">
-      <h1>Weekly View</h1>
-    </div>
-    <div class="filters">
-      <label><input type="checkbox" checked onchange="toggle('study')"/> Study</label>
-      <label><input type="checkbox" checked onchange="toggle('rest')"/> Rest</label>
-      <label><input type="checkbox" checked onchange="toggle('chill')"/> Chill Time</label>
-    </div>
-    <div class="timeline" id="timeline">
-      <!-- Timeline blocks will be inserted here -->
-    </div>
+  <div class="main-content">
+    <div id='calendar'></div>
   </div>
-  <footer>Version V1.1</footer>
-
   <script>
-    const tasks = [
-      { hour: 9, type: 'study', title: 'Deep Work Block' },
-      { hour: 12, type: 'rest', title: 'Lunch Break' },
-      { hour: 14, type: 'study', title: 'Focused Study' },
-      { hour: 17, type: 'chill', title: 'Chill Time' }
-    ];
-
-    function renderTimeline() {
-      const timeline = document.getElementById('timeline');
-      timeline.innerHTML = '';
-      for (let h = 0; h < 24; h++) {
-        const task = tasks.find(t => t.hour === h);
-        const block = document.createElement('div');
-        block.className = 'hour-block';
-        block.innerHTML = `
-          <strong>${h.toString().padStart(2, '0')}:00</strong>
-          ${task && filters[task.type] ? `<div class="task ${task.type}">${task.title}</div>` : ''}
-        `;
-        timeline.appendChild(block);
-      }
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
     }
 
-    const filters = {
-      study: true,
-      rest: true,
-      chill: true
-    };
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        nowIndicator: true,
+        editable: true,
+        selectable: true,
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events: [
+          {
+            id: '1',
+            title: 'Study - Deep Work',
+            start: new Date().toISOString().split('T')[0] + 'T09:00:00',
+            end: new Date().toISOString().split('T')[0] + 'T10:30:00',
+            extendedProps: { type: 'Study' }
+          },
+          {
+            id: '2',
+            title: 'Lunch',
+            start: new Date().toISOString().split('T')[0] + 'T12:30:00',
+            end: new Date().toISOString().split('T')[0] + 'T13:15:00',
+            extendedProps: { type: 'Lunch' }
+          }
+        ],
+        eventClick: function (info) {
+          const newTitle = prompt('Edit event title:', info.event.title);
+          if (newTitle !== null) {
+            info.event.setProp('title', newTitle);
+          }
+        }
+      });
 
-    function toggle(type) {
-      filters[type] = !filters[type];
-      renderTimeline();
-    }
+      calendar.render();
 
-    renderTimeline();
+      document.querySelectorAll('[data-type]').forEach(cb => {
+        cb.addEventListener('change', function () {
+          const type = this.getAttribute('data-type');
+          calendar.getEvents().forEach(event => {
+            if (event.extendedProps.type === type) {
+              if (this.checked) {
+                event.setProp('display', 'auto');
+              } else {
+                event.setProp('display', 'none');
+              }
+            }
+          });
+        });
+      });
+    });
   </script>
 </body>
 </html>
