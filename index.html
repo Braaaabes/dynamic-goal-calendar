@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dynamic Goal Calendar - V1.2</title>
-  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet" />
   <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
   <style>
     :root {
@@ -202,7 +202,7 @@
       </div>
       <button class="toggle-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
     </div>
-    <div class="version-label">Version V1.3.4</div>
+    <div class="version-label">Version V1.3.5</div>
   </div>
   <div class="main-content">
     <div id='calendar'></div>
@@ -271,6 +271,7 @@ const modalStart = document.getElementById('modalStart');
 const modalDuration = document.getElementById('modalDuration');
 const modalPreset = document.getElementById('modalPreset');
 const modalSave = document.getElementById('modalSave');
+const modalDelete = document.getElementById('modalDelete');
 const modalCancel = document.getElementById('modalCancel');
 
 let selectedEvent = null;
