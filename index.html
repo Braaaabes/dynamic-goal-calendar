@@ -3,64 +3,183 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dynamic Goal Calendar - V1.3.12</title>
- <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
-  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+  <title>Dynamic Goal Calendar - V1.3.14</title>
+  <link href="https://unpkg.com/@fullcalendar/core@6.1.8/main.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <style>
-    /* [Styles omitted for brevity, same as user-provided CSS] */
+    :root {
+      --pastel-blue: #a3d2ca;
+      --pastel-green: #b5ead7;
+      --pastel-yellow: #fff5ba;
+      --pastel-pink: #ffb7b2;
+      --pastel-purple: #cdb4db;
+      --neutral-bg: #f4f4f4;
+      --dark-bg: #2c2c2c;
+      --font-color: #333;
+      --border-radius: 8px;
+    }
+
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: var(--neutral-bg);
+      color: var(--font-color);
+      display: flex;
+    }
+
+    .sidebar {
+      width: 240px;
+      background-color: var(--pastel-blue);
+      padding: 20px;
+      height: 100vh;
+      box-sizing: border-box;
+      border-top-right-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    .toggle-button {
+      margin-top: 10px;
+      padding: 6px 10px;
+      background-color: var(--pastel-green);
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+    }
+
+    .version-label {
+      font-size: 0.85rem;
+      margin-top: 20px;
+      text-align: center;
+      opacity: 0.7;
+    }
+
+    .dark-mode {
+      background-color: var(--dark-bg);
+      color: white;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .modal-buttons button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+    }
+
+    #modalSave { background-color: var(--pastel-green); }
+    #modalDelete { background-color: var(--pastel-pink); }
+    #modalCancel { background-color: var(--pastel-yellow); }
+
+    #undoBanner {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--pastel-yellow);
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    #undoBanner.hidden { display: none; }
+    #undoButton {
+      padding: 4px 10px;
+      background-color: var(--pastel-green);
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <div class="sidebar">
     <div>
       <h2>Filters</h2>
-      <div class="toggle-section">
+      <div>
         <label><input type="checkbox" checked data-type="Study" /> Study</label>
         <label><input type="checkbox" checked data-type="Rest" /> Rest</label>
         <label><input type="checkbox" checked data-type="Lunch" /> Lunch</label>
         <label><input type="checkbox" checked data-type="Chill Time" /> Chill Time</label>
       </div>
-      <button class="toggle-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+      <button class="toggle-button" id="darkModeToggle">Toggle Dark Mode</button>
     </div>
-    <div class="version-label">Version V1.3.13</div>
+    <div class="version-label">Version V1.3.15</div>
   </div>
   <div class="main-content">
-    <div id='calendar'></div>
+    <div id="calendar"></div>
   </div>
 
   <script>
     function toggleDarkMode() {
-      document.body.classList.toggle("dark-mode");
+      const isDark = document.body.classList.toggle("dark-mode");
+      document.getElementById("darkModeToggle").textContent = isDark ? "Light Mode" : "Dark Mode";
+      localStorage.setItem("theme", isDark ? "dark" : "light");
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-      const calendarEl = document.getElementById('calendar');
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark-mode");
+      window.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("darkModeToggle").textContent = "Light Mode";
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const calendarEl = document.getElementById("calendar");
       const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'timeGridWeek',
+        initialView: "timeGridWeek",
         nowIndicator: true,
         editable: true,
         selectable: true,
         headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          left: "prev,next today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay"
         },
-        events: [
-          {
-            id: '1',
-            title: 'Study - Deep Work',
-            start: new Date().toISOString().split('T')[0] + 'T09:00:00',
-            end: new Date().toISOString().split('T')[0] + 'T10:30:00',
-            extendedProps: { type: 'Study' }
-          },
-          {
-            id: '2',
-            title: 'Lunch',
-            start: new Date().toISOString().split('T')[0] + 'T12:30:00',
-            end: new Date().toISOString().split('T')[0] + 'T13:15:00',
-            extendedProps: { type: 'Lunch' }
-          }
-        ],
+        events: [],
         eventClick: function (info) {
           openModal(info.event);
         },
@@ -68,41 +187,28 @@
           const start = new Date(info.date);
           const end = new Date(start.getTime() + 60 * 60000);
           const newEvent = calendar.addEvent({
-            title: 'New Session',
+            title: "New Session",
             start,
             end,
-            extendedProps: { type: 'Study' }
+            extendedProps: { type: "Study" }
           });
           openModal(newEvent);
         }
       });
 
       calendar.render();
-      console.log("🧪 JS is loading correctly");
 
-      document.querySelectorAll('[data-type]').forEach(cb => {
-        cb.addEventListener('change', function () {
-          const type = this.getAttribute('data-type');
-          calendar.getEvents().forEach(event => {
-            if (event.extendedProps.type === type) {
-              event.setProp('display', this.checked ? 'auto' : 'none');
-            }
-          });
-        });
-      });
-
-      // Modal Elements
-      const modal = document.getElementById('eventModal');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalDate = document.getElementById('modalDate');
-      const modalStart = document.getElementById('modalStart');
-      const modalDuration = document.getElementById('modalDuration');
-      const modalPreset = document.getElementById('modalPreset');
-      const modalSave = document.getElementById('modalSave');
-      const modalDelete = document.getElementById('modalDelete');
-      const modalCancel = document.getElementById('modalCancel');
-      const undoBanner = document.getElementById('undoBanner');
-      const undoButton = document.getElementById('undoButton');
+      const modal = document.getElementById("eventModal");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalDate = document.getElementById("modalDate");
+      const modalStart = document.getElementById("modalStart");
+      const modalDuration = document.getElementById("modalDuration");
+      const modalPreset = document.getElementById("modalPreset");
+      const modalSave = document.getElementById("modalSave");
+      const modalDelete = document.getElementById("modalDelete");
+      const modalCancel = document.getElementById("modalCancel");
+      const undoBanner = document.getElementById("undoBanner");
+      const undoButton = document.getElementById("undoButton");
 
       let selectedEvent = null;
       let lastDeletedEvent = null;
@@ -113,82 +219,76 @@
         const start = event.start;
         const end = event.end;
         const durationMins = (end - start) / 60000;
-
         modalTitle.value = event.title;
-        modalDate.value = start.toISOString().split('T')[0];
+        modalDate.value = start.toISOString().split("T")[0];
         modalStart.value = start.toTimeString().slice(0, 5);
         modalDuration.value = durationMins;
         modalPreset.value = event.extendedProps.type;
-
-        modal.classList.remove('hidden');
+        modal.classList.remove("hidden");
       }
 
       function closeModal() {
-        modal.classList.add('hidden');
+        modal.classList.add("hidden");
         selectedEvent = null;
       }
 
-      modalCancel.addEventListener('click', closeModal);
+      modalCancel.addEventListener("click", closeModal);
 
-      modalSave.addEventListener('click', () => {
+      modalSave.addEventListener("click", () => {
         if (!selectedEvent) return;
-
-        const newTitle = modalTitle.value;
-        const newDate = modalDate.value;
-        const newStartTime = modalStart.value;
-        const newDuration = parseInt(modalDuration.value, 10);
-        const newPreset = modalPreset.value;
-
-        const newStart = new Date(`${newDate}T${newStartTime}`);
-        const newEnd = new Date(newStart.getTime() + newDuration * 60000);
-
-        selectedEvent.setProp('title', newTitle);
+        const newStart = new Date(\`\${modalDate.value}T\${modalStart.value}\`);
+        const newEnd = new Date(newStart.getTime() + parseInt(modalDuration.value, 10) * 60000);
+        selectedEvent.setProp("title", modalTitle.value);
         selectedEvent.setStart(newStart);
         selectedEvent.setEnd(newEnd);
-        selectedEvent.setExtendedProp('type', newPreset);
-
+        selectedEvent.setExtendedProp("type", modalPreset.value);
         closeModal();
       });
 
-      modalDelete.addEventListener('click', () => {
+      modalDelete.addEventListener("click", () => {
         if (!selectedEvent) return;
-
         lastDeletedEvent = {
           title: selectedEvent.title,
           start: selectedEvent.start,
           end: selectedEvent.end,
           extendedProps: { ...selectedEvent.extendedProps }
         };
-
         selectedEvent.remove();
         closeModal();
-        undoBanner.classList.remove('hidden');
-
+        undoBanner.classList.remove("hidden");
         clearTimeout(undoTimeout);
         undoTimeout = setTimeout(() => {
-          undoBanner.classList.add('hidden');
+          undoBanner.classList.add("hidden");
           lastDeletedEvent = null;
         }, 10000);
       });
 
-      undoButton.addEventListener('click', () => {
+      undoButton.addEventListener("click", () => {
         if (!lastDeletedEvent) return;
-
         calendar.addEvent({
           title: lastDeletedEvent.title,
           start: lastDeletedEvent.start,
           end: lastDeletedEvent.end,
           extendedProps: lastDeletedEvent.extendedProps
         });
-
         lastDeletedEvent = null;
-        undoBanner.classList.add('hidden');
+        undoBanner.classList.add("hidden");
         clearTimeout(undoTimeout);
+      });
+
+      document.querySelectorAll('[data-type]').forEach(cb => {
+        cb.addEventListener("change", function () {
+          const type = this.getAttribute("data-type");
+          calendar.getEvents().forEach(event => {
+            if (event.extendedProps.type === type) {
+              event.setProp("display", this.checked ? "auto" : "none");
+            }
+          });
+        });
       });
     });
   </script>
 
-  <!-- Event Edit Modal -->
   <div id="eventModal" class="modal hidden">
     <div class="modal-content">
       <h2>Edit Event</h2>
@@ -212,7 +312,6 @@
     </div>
   </div>
 
-  <!-- Undo Banner -->
   <div id="undoBanner" class="hidden">
     <span>Event deleted.</span>
     <button id="undoButton">Undo</button>
