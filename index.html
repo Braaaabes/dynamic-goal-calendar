@@ -173,7 +173,7 @@
       </div>
       <button class="toggle-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
     </div>
-    <div class="version-label">Version V1.2</div>
+    <div class="version-label">Version V1.3.2</div>
   </div>
   <div class="main-content">
     <div id='calendar'></div>
@@ -260,6 +260,14 @@ modalCancel.addEventListener('click', closeModal);
 modalSave.addEventListener('click', () => {
   if (!selectedEvent) return;
 
+modalDelete.addEventListener('click', () => {
+  if (!selectedEvent) return;
+
+  selectedEvent.remove(); // Remove from calendar
+  closeModal();           // Close the modal after delete
+});
+
+  
   const newTitle = modalTitle.value;
   const newDate = modalDate.value;
   const newStartTime = modalStart.value;
@@ -296,7 +304,7 @@ modalSave.addEventListener('click', () => {
   </script>
 
   <!-- Event Edit Modal -->
-<div id="eventModal" class="modal">
+<div id="eventModal" class="modal hidden">
   <div class="modal-content">
     <h2>Edit Event</h2>
 
