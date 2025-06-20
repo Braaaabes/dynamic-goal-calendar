@@ -159,6 +159,35 @@
   background-color: var(--pastel-yellow);
 }
 
+#undoBanner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--pastel-yellow);
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+#undoBanner.hidden {
+  display: none;
+}
+
+#undoButton {
+  padding: 4px 10px;
+  background-color: var(--pastel-green);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+    
   </style>
 </head>
 <body>
@@ -173,7 +202,7 @@
       </div>
       <button class="toggle-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
     </div>
-    <div class="version-label">Version V1.3.3</div>
+    <div class="version-label">Version V1.3.4</div>
   </div>
   <div class="main-content">
     <div id='calendar'></div>
@@ -282,6 +311,51 @@ modalDelete.addEventListener('click', () => {
   closeModal();           // Close the modal after delete
 });
 
+  const undoBanner = document.getElementById("undoBanner");
+const undoButton = document.getElementById("undoButton");
+
+let lastDeletedEvent = null;
+let undoTimeout = null;
+
+modalDelete.addEventListener('click', () => {
+  if (!selectedEvent) return;
+
+  lastDeletedEvent = {
+    title: selectedEvent.title,
+    start: selectedEvent.start,
+    end: selectedEvent.end,
+    extendedProps: { ...selectedEvent.extendedProps }
+  };
+
+  selectedEvent.remove();
+  closeModal();
+
+  // Show undo banner
+  undoBanner.classList.remove("hidden");
+
+  // Auto-hide after 10 seconds
+  clearTimeout(undoTimeout);
+  undoTimeout = setTimeout(() => {
+    undoBanner.classList.add("hidden");
+    lastDeletedEvent = null;
+  }, 10000);
+});
+
+undoButton.addEventListener("click", () => {
+  if (!lastDeletedEvent) return;
+
+  calendar.addEvent({
+    title: lastDeletedEvent.title,
+    start: lastDeletedEvent.start,
+    end: lastDeletedEvent.end,
+    extendedProps: lastDeletedEvent.extendedProps
+  });
+
+  lastDeletedEvent = null;
+  undoBanner.classList.add("hidden");
+  clearTimeout(undoTimeout);
+});
+
   
   const newTitle = modalTitle.value;
   const newDate = modalDate.value;
@@ -348,6 +422,12 @@ modalDelete.addEventListener('click', () => {
       </select>
     </label>
 
+<!-- Undo Banner -->
+<div id="undoBanner" class="hidden">
+  <span>Event deleted.</span>
+  <button id="undoButton">Undo</button>
+</div>
+    
     <div class="modal-buttons">
       <button id="modalSave">Save</button>
       <button id="modalDelete">Delete</button>
