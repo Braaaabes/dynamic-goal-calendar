@@ -173,7 +173,7 @@
       </div>
       <button class="toggle-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
     </div>
-    <div class="version-label">Version V1.3.2</div>
+    <div class="version-label">Version V1.3.3</div>
   </div>
   <div class="main-content">
     <div id='calendar'></div>
@@ -213,8 +213,23 @@
         ],
         eventClick: function (info) {
   openModal(info.event);
+},
+dateClick: function (info) {
+  const start = new Date(info.date);
+  const end = new Date(start.getTime() + 60 * 60000); // default: +60 mins
+
+  const newEvent = calendar.addEvent({
+    title: 'New Session',
+    start: start,
+    end: end,
+    extendedProps: { type: 'Study' }
+  });
+
+  openModal(newEvent);
 }
 
+
+        
       });
 
       calendar.render();
