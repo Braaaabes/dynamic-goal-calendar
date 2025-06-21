@@ -236,7 +236,8 @@
 
       modalSave.addEventListener("click", () => {
         if (!selectedEvent) return;
-        const newStart = new Date(`${modalDate.value}T${modalStart.value}`);
+    const newStart = new Date(`${modalDate.value}T${modalStart.value}:00`);
+    newStart.setMinutes(newStart.getMinutes() + newStart.getTimezoneOffset());
         const newEnd = new Date(newStart.getTime() + parseInt(modalDuration.value, 10) * 60000);
         selectedEvent.setProp("title", modalTitle.value);
         selectedEvent.setStart(newStart);
