@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dynamic Goal Calendar - V1.3.14</title>
+  <title>Dynamic Goal Calendar - V1.3.15</title>
   <link href="https://unpkg.com/@fullcalendar/core@6.1.8/main.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <style>
@@ -147,7 +147,7 @@
       </div>
       <button class="toggle-button" id="darkModeToggle">Toggle Dark Mode</button>
     </div>
-    <div class="version-label">Version V1.3.15</div>
+    <div class="version-label">Version V1.3.16</div>
   </div>
   <div class="main-content">
     <div id="calendar"></div>
@@ -236,7 +236,7 @@
 
       modalSave.addEventListener("click", () => {
         if (!selectedEvent) return;
-        const newStart = new Date(\`\${modalDate.value}T\${modalStart.value}\`);
+        const newStart = new Date(`${modalDate.value}T${modalStart.value}`);
         const newEnd = new Date(newStart.getTime() + parseInt(modalDuration.value, 10) * 60000);
         selectedEvent.setProp("title", modalTitle.value);
         selectedEvent.setStart(newStart);
