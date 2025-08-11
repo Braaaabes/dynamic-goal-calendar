@@ -1,0 +1,32 @@
+// Dynamic Goal Calendar — theme persistence utils (V1.4 branch)
+// Safe wrappers so private-mode or blocked storage won’t crash the app
+const storageSafe = {
+  get(key) {
+    try { return window.localStorage.getItem(key); } catch { return null; }
+  },
+  set(key, value) {
+    try { window.localStorage.setItem(key, value); } catch { /* no-op */ }
+  },
+  remove(key) {
+    try { window.localStorage.removeItem(key); } catch { /* no-op */ }
+  }
+};
+
+const THEME_KEY = "dgc.theme";
+const isValidTheme = (t) => t === "light" || t === "dark";
+
+function readStoredTheme() {
+  const t = storageSafe.get(THEME_KEY);
+  return isValidTheme(t) ? t : null;
+}
+
+function storeTheme(theme) {
+  if (isValidTheme(theme)) storageSafe.set(THEME_KEY, theme);
+}
+
+function clearStoredTheme() {
+  storageSafe.remove(THEME_KEY);
+}
+
+// Make available to other scripts
+window.DGCThemeStorage = { readStoredTheme, storeTheme, clearStoredTheme };
